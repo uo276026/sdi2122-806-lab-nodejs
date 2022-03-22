@@ -9,6 +9,12 @@ var logger = require('morgan');
 
 let app = express();
 
+let bodyParser = require('body-parser');
+//Para poder procesa JSON
+app.use(bodyParser.json());
+//Para poder procesar formularios extándar
+app.use(bodyParser.urlencoded({ extended: true }));
+
 let indexRouter = require('./routes/index');
 let usersRouter = require('./routes/users');
 require("./routes/songs.js")(app);
