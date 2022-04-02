@@ -9,6 +9,36 @@ module.exports = {
         this.app = app;
     },
 
+    //Función que devuelve todos los doscumentos en "songs" mediante find()
+    //Si no establecemos filtro en find(), devuelve todas
+    //El resultado lo transformamos en array
+    getSongs: async function (filter, options) {
+        try {
+            const client = await this.mongoClient.connect(this.app.get('connectionStrings'));
+            const database = client.db("musicStore");
+            const collectionName = 'songs';
+            const songsCollection = database.collection(collectionName);
+            const songs = await songsCollection.find(filter, options).toArray();
+            return songs;
+        } catch (error) {
+            throw (error);
+        }
+    },
+
+    //funcion encargada de devolver una unica cancion en base a un filtro y unas opciones
+    findSong: async function (filter, options) {
+        try {
+            const client = await this.mongoClient.connect(this.app.get('connectionStrings'));
+            const database = client.db("musicStore");
+            const collectionName = 'songs';
+            const songsCollection = database.collection(collectionName);
+            const song = await songsCollection.findOne(filter, options);
+            return song;
+        } catch (error) {
+            throw (error);
+        }
+    },
+
     //Otra función asincrona (no puede tener return) para devolver un valor,
     //lo pasa como parametro a la funcion callback
     //Exito: Callback recibe la id de la cancion insertada
@@ -28,4 +58,6 @@ module.exports = {
             }
         });
     }
+
+
 };
