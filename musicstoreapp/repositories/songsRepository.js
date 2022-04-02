@@ -9,6 +9,19 @@ module.exports = {
         this.app = app;
     },
 
+    updateSong: async function(newSong, filter, options) {
+        try {
+            const client = await this.mongoClient.connect(this.app.get('connectionStrings'));
+            const database = client.db("musicStore");
+            const collectionName = 'songs';
+            const songsCollection = database.collection(collectionName);
+            const result = await songsCollection.updateOne(filter, {$set: newSong}, options);
+            return result;
+        } catch (error) {
+            throw (error);
+        }
+    },
+
     //Función que devuelve todos los doscumentos en "songs" mediante find()
     //Si no establecemos filtro en find(), devuelve todas
     //El resultado lo transformamos en array
