@@ -1,10 +1,15 @@
 module.exports = {
     mongoClient: null,
     app: null,
+
+    //Definimos una función para inicializar dos variables globales
     init: function (app, mongoClient) {
+        //definimos dos variables
         this.mongoClient = mongoClient;
         this.app = app;
-    }, findUser: async function (filter, options) {
+    },
+
+    findUser: async function (filter, options) {
         try {
             const client = await this.mongoClient.connect(this.app.get('connectionStrings'));
             const database = client.db("musicStore");
@@ -16,6 +21,7 @@ module.exports = {
             throw (error);
         }
     },
+
     insertUser: async function (user) {
         try {
             const client = await this.mongoClient.connect(this.app.get('connectionStrings'));

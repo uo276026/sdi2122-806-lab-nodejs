@@ -32,8 +32,6 @@ app.use(bodyParser.json());
 //Para poder procesar formularios extándar
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
-
 let indexRouter = require('./routes/index');
 //let usersRouter = require('./routes/users');
 
@@ -46,14 +44,19 @@ const userSessionRouter = require('./routes/userSessionRouter');
 const userAudiosRouter = require('./routes/userAudiosRouter');
 app.use("/songs/add",userSessionRouter);
 app.use("/publications",userSessionRouter);
-//app.use("/audios/",userSessionRouter);
 app.use("/audios/",userAudiosRouter);
 app.use("/shop/",userSessionRouter)
 
 let songsRepository = require("./repositories/songsRepository.js");
+let commentsRepository = require("./repositories/commentsRepository.js");
 songsRepository.init(app, MongoClient);
+commentsRepository.init(app, MongoClient);
 require("./routes/songs.js")(app, songsRepository);
+require("./routes/songs.js")(app, commentsRepository);
 require("./routes/songs.js")(app, MongoClient);
+
+
+require("./routes/comments.js")(app, commentsRepository);
 
 const usersRepository = require("./repositories/usersRepository.js");
 usersRepository.init(app, MongoClient);

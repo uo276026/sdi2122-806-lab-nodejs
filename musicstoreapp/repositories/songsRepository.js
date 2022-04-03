@@ -5,7 +5,7 @@ module.exports = {
     //Definimos una función para inicializar dos variables globales
     init: function (app, mongoClient) {
         //definimos dos variables
-        this. mongoClient= mongoClient;
+        this.mongoClient= mongoClient;
         this.app = app;
     },
 
