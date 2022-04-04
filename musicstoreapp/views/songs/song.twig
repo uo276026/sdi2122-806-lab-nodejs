@@ -17,8 +17,33 @@
 		  </div>
 		</div>
 	  </div>
-	  
-	 <!-- -->
+
+
+    <div class="media col-xs-10">
+        <form class="form-horizontal" method="post" action="/comments/{{ song._id }}"
+              encType="multipart/form-data">
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="comment" name="comment" placeholder="Texto de comentario" required/>
+            </div>
+            <button type="submit" class="btn btn-primary">Comentar</button>
+
+        </form>
+    </div>
+
+    <br>
+    <br>
+    <h1>Comentarios</h1>
+            <div class="media-body">
+                {% for comment in comments %}
+                    <div>
+                        <h4 class="media-heading">{{ comment.author }}</h4>
+                        <td>{{ comment.text }}</td>
+                    </div>
+                    <br>
+                {% endfor %}
+            </div>
+
+	 <!--
 	 <div class="row" style="margin-top: 20px;" >
 		<div class="media col-xs-10">
 			  <div class="media-left media-middle">
@@ -53,5 +78,5 @@
 				Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
 			  </div>
 		  </div>
-	  </div>
+	  </div> --->
 {% endblock %}
