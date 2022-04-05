@@ -25,6 +25,21 @@ module.exports = function (app, songsRepository, commentsRepository) {
         res.send(String(response));
     });
 
+    app.get('/songs/delete/:id', function (req, res) {
+        //Filtro para coger la cancion de id determinado
+        let filter = {_id: ObjectId(req.params.id)};
+        //llamamos al repositorio a eliminar cancion con filtro
+        songsRepository.deleteSong(filter, {}).then(result => {
+            if (result == null || result.deletedCount == 0) {
+                res.send("No se ha podido eliminar el registro");
+            } else {
+                res.redirect("/publications");
+            }
+        }).catch(error => {
+            res.send("Se ha producido un error al intentar eliminar la canción: " + error)
+        });
+    })
+
     //Tiene que ir antes de /songs/:id porque si lo hacemos al reves, siempre
     //intentemos agregar una cancion, es como si estuvieramos accediendo a la
     //cancion cuyo id=add

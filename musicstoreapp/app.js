@@ -47,6 +47,11 @@ app.use("/publications",userSessionRouter);
 app.use("/audios/",userAudiosRouter);
 app.use("/shop/",userSessionRouter)
 
+const userAuthorRouter = require('./routes/userAuthorRouter');
+//Para editar y borrar se hara una comprobacion de q el usuario es propietario de esas canciones
+app.use("/songs/edit",userAuthorRouter);
+app.use("/songs/delete",userAuthorRouter);
+
 let songsRepository = require("./repositories/songsRepository.js");
 let commentsRepository = require("./repositories/commentsRepository.js");
 songsRepository.init(app, MongoClient);
