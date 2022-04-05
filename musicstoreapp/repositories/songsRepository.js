@@ -81,7 +81,37 @@ module.exports = {
                     .catch(err => callbackFunction({error: err.message}));
             }
         });
-    }
+    },
+    //Añadir compra que relacione al usuario con la cancion comprada (N-N)
+    //Cada documento "compra" registrara al email de usuario y id de cancion.
+    buySong: function (shop, callbackFunction) {
+        this.mongoClient.connect(this.app.get('connectionStrings'), function (err, dbClient) {
+            if (err) {
+                callbackFunction(null)
+            } else {
+                const database = dbClient.db("musicStore");
+                const collectionName = 'purchases';
+                const purchasesCollection = database.collection(collectionName);
+                purchasesCollection.insertOne(shop)
+                    .then(result => callbackFunction(result.insertedId))
+                    .then(() => dbClient.close())
+                    .catch(err => callbackFunction({error: err.message}));
+            }
+        });
+    },
+    //Devuelve una lista de compras en base a filtro
+    getPurchases: async function (filter, options) {
+        try {
+            const client = await this.mongoClient.connect(this.app.get('connectionStrings'));
+            const database = client.db("musicStore");
+            const collectionName = 'purchases';
+            const purchasesCollection = database.collection(collectionName);
+            const purchases = await purchasesCollection.find(filter, options).toArray();
+            return purchases;
+        } catch (error) {
+            throw (error);
+        }
+    },
 
 
 };
