@@ -8,6 +8,8 @@ var logger = require('morgan');
 //var usersRouter = require('./routes/users');
 
 let app = express();
+let jwt = require('jsonwebtoken');
+app.set('jwt', jwt);
 
 let expressSession = require('express-session');
 app.use(expressSession({
@@ -54,20 +56,22 @@ const userAuthorRouter = require('./routes/userAuthorRouter');
 app.use("/songs/edit",userAuthorRouter);
 app.use("/songs/delete",userAuthorRouter);
 
+const userTokenRouter = require('./routes/userTokenRouter');
+app.use("/api/v1.0/songs/", userTokenRouter);
+
 let songsRepository = require("./repositories/songsRepository.js");
 let commentsRepository = require("./repositories/commentsRepository.js");
+const usersRepository = require("./repositories/usersRepository.js");
+
 songsRepository.init(app, MongoClient);
 commentsRepository.init(app, MongoClient);
-require("./routes/songs.js")(app, songsRepository, commentsRepository);
-require("./routes/api/songsAPIv1.0.js")(app, songsRepository);
-require("./routes/songs.js")(app, MongoClient);
-
-require("./routes/comments.js")(app, commentsRepository);
-
-const usersRepository = require("./repositories/usersRepository.js");
 usersRepository.init(app, MongoClient);
-require("./routes/users.js")(app, usersRepository);
 
+require("./routes/songs.js")(app, songsRepository, commentsRepository);
+require("./routes/api/songsAPIv1.0.js")(app, songsRepository, usersRepository);
+require("./routes/songs.js")(app, MongoClient);
+require("./routes/comments.js")(app, commentsRepository);
+require("./routes/users.js")(app, usersRepository);
 require("./routes/author.js")(app);
 
 // view engine setup
