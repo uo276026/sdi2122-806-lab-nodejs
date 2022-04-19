@@ -5,6 +5,10 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 let app = express();
 
+let rest = require('request');
+app.set('rest', rest);
+
+
 //agregar las cabeceras más permisivas de Access-Cotrol-Allow-Origin para todas las peticiones
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");

@@ -35,7 +35,7 @@
 
               {% if status == false %}
               <a class="btn btn-primary pull-right"
-                 href="/songs/buy/{{ song._id }}">{{ song.price }} €</a>
+                  href="/songs/buy/{{ song._id }}">{{ song.price }} € - {{ song.usd }} $</a>
               {% endif %}
 
 			 <!-- Cambiar el precio por "reproducir" si ya está comprada -->
